@@ -10,6 +10,6 @@
   "author": "TGHP",
   "homepage": "https://github.com/tghp/gulppress#readme",
   "publishConfig": {
-     "registry": "https://npm.pkg.github.com/"
+     "registry": "https://npm.pkg.github.com/tghp"
   }
 }
