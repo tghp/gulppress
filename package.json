@@ -10,9 +10,9 @@
   "author": "TGHP",
   "homepage": "https://github.com/tghp/gulppress#readme",
   "devDependencies": {
-     "gulp": "4.0.2"
+    "gulp": "4.0.2"
   },
   "publishConfig": {
-     "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
