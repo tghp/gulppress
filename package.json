@@ -9,7 +9,7 @@
   },
   "author": "TGHP",
   "homepage": "https://github.com/tghp/gulppress#readme",
-  "devDependencies": {
+  "dependencies": {
     "gulp": "4.0.2"
   },
   "publishConfig": {
