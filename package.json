@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tghp/gulppress.git"
+    "url": "git://github.com/tghp/gulppress.git"
   },
   "author": "TGHP",
   "homepage": "https://github.com/tghp/gulppress#readme",
