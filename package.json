@@ -1,5 +1,5 @@
 {
-  "name": "gulppress",
+  "name": "@tghp/gulppress",
   "version": "1.0.0-rc2",
   "description": "Shared gulpfile across TGHP WordPress projects",
   "main": "index.js",
