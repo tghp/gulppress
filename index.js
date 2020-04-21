@@ -1,5 +1,6 @@
-module.exports = function () {
-	const gulp = require('gulp');
-
-	return gulp;
+module.exports = function (extendedTasksCb) {
+    return extendedTasksCb({
+        'script': require('./tasks/script'),
+        'style': require('./tasks/style')
+    });
 }
