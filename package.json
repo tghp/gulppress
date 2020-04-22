@@ -10,7 +10,25 @@
   "author": "TGHP",
   "homepage": "https://github.com/tghp/gulppress#readme",
   "dependencies": {
-    "gulp": "4.0.2"
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "autoprefixer": "^9.7.6",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.1",
+    "glob": "^7.1.6",
+    "gulp": "4.0.2",
+    "gulp-dart-sass": "^1.0.1",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "merge-stream": "^2.0.0",
+    "postcss-easing-gradients": "^3.0.1",
+    "uglifyify": "^5.0.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
