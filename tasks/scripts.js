@@ -4,25 +4,28 @@ const mergeStream = require('merge-stream');
 const noop = require('gulp-noop');
 
 const scripts = () => {
+    const streams = [];
     const themePaths = global.gulppress.getThemePaths();
 
-    return mergeStream(themePaths.map(themePath => {
+    themePaths.forEach(themePath => {
         const scriptEntriesForThemePath = scriptEntries(`${themePath}/assets/src/js`);
-        
-        if (scriptEntriesForThemePath) {
-            return mergeStream(scriptEntriesForThemePath.map(entryScript =>
-                browserifyHelper.gulpify(
-                    browserifyHelper.bundle(
-                        browserifyHelper.instance(entryScript)
-                    ),
-                    entryScript,
-                    themePath
-                )
-            ))
-        } else {
-            return noop();
+
+        if (scriptEntriesForThemePath.length) {
+            scriptEntriesForThemePath.forEach(entryScript => {
+                streams.push(
+                    browserifyHelper.gulpify(
+                        browserifyHelper.bundle(
+                            browserifyHelper.instance(entryScript)
+                        ),
+                        entryScript,
+                        themePath
+                    )
+                );
+            })
         }
-    }));
+    });
+
+    return mergeStream(streams);
 };
 scripts.displayName = 'scripts';
 scripts.description = 'Compile JavaScript scripts using browserify';
