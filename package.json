@@ -1,6 +1,6 @@
 {
   "name": "@tghp/gulppress",
-  "version": "1.0.0-rc5",
+  "version": "1.1.1",
   "description": "Shared gulpfile across TGHP WordPress projects",
   "main": "index.js",
   "repository": {
@@ -20,6 +20,7 @@
     "glob": "^7.1.6",
     "gulp": "4.0.2",
     "gulp-dart-sass": "^1.0.1",
+    "gulp-noop": "^1.0.1",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
