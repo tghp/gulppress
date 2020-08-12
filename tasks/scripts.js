@@ -1,7 +1,6 @@
 const scriptEntries = require('../helpers/script-entries');
 const browserifyHelper = require('../helpers/browserify');
 const mergeStream = require('merge-stream');
-const noop = require('gulp-noop');
 
 const scripts = () => {
     const streams = [];

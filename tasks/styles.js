@@ -6,26 +6,42 @@ const postcss  = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const postCssEase = require('postcss-easing-gradients');
 
-
 const styles = () => {
     const themePaths = global.gulppress.getThemePaths();
+    const eventDispatcher = global.gulppress.getEventDispatcher();
 
-    const plugins = [
-        postCssEase(),
-        autoprefixer({
-            grid: 'autoplace'
-        })
-    ];
-
-    return mergeStream(themePaths.map(themePath =>
-        src('./assets/src/sass/*.scss', { sourcemaps: true, cwd: themePath, base: '' })
-            .pipe(plumber())
-            .pipe(sass({
-                // includePaths: ['node_modules', 'native-search/node_modules']
+    const plugins = eventDispatcher.emitFilter(
+        'postcss.plugins',
+        [
+            postCssEase(),
+            autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
+                grid: 'autoplace'
             }))
-            .pipe(postcss(plugins))
-            .pipe(dest('./assets/dist/css/', { sourcemaps: '.', cwd: themePath, base: '' }))
-    ));
+        ]
+    );
+
+    return mergeStream(themePaths.map(themePath => {
+        // Create stream
+        let stream = src('./assets/src/sass/*.scss', {sourcemaps: true, cwd: themePath, base: ''})
+            .pipe(plumber());
+
+        // Allow filters to add to stream at the start
+        stream = eventDispatcher.emitFilter(['task.styles.stream.post-src', 'stream.post-src'], stream, { streamName: 'styles' });
+
+        // Add to stream for this task
+        stream.pipe(sass(eventDispatcher.emitFilter('sass.options', {
+                includePaths: ['node_modules']
+            }, { eventName: 'styles' })))
+            .pipe(postcss(plugins));
+
+        // Allow filters to add to stream at the end
+        stream = eventDispatcher.emitFilter(['task.styles.stream.pre-dest', 'stream.pre-dest'], stream, { streamName: 'styles' });
+
+        // Dest stream to output
+        stream = stream.pipe(dest('./assets/dist/css/', {sourcemaps: '.', cwd: themePath, base: ''}));
+
+        return eventDispatcher.emitFilter(['task.styles.stream.end', 'stream.end'], stream, { streamName: 'styles' });
+    }));
 };
 styles.displayName = 'styles';
 styles.description = 'Compile SCSS stylesheets';
