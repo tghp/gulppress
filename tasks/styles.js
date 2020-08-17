@@ -5,6 +5,7 @@ const sass = require('gulp-dart-sass');
 const postcss  = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const postCssEase = require('postcss-easing-gradients');
+const postCssInlineSvg = require('postcss-inline-svg');
 
 const styles = () => {
     const themePaths = global.gulppress.getThemePaths();
@@ -14,6 +15,7 @@ const styles = () => {
         'postcss.plugins',
         [
             postCssEase(),
+            postCssInlineSvg(),
             autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
                 grid: 'autoplace'
             }))
