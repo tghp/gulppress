@@ -26,6 +26,7 @@
     "gulp-postcss": "^8.0.0",
     "merge-stream": "^2.0.0",
     "postcss-easing-gradients": "^3.0.1",
+    "postcss-inline-svg": "^4.1.0",
     "uglifyify": "^5.0.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
