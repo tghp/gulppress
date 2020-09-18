@@ -14,7 +14,9 @@ const scripts = () => {
                 streams.push(
                     browserifyHelper.gulpify(
                         browserifyHelper.bundle(
-                            browserifyHelper.instance(entryScript)
+                            browserifyHelper.instance(entryScript),
+                            entryScript,
+                            themePath
                         ),
                         entryScript,
                         themePath

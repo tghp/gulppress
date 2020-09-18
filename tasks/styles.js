@@ -6,6 +6,7 @@ const postcss  = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const postCssEase = require('postcss-easing-gradients');
 const postCssSvg = require('postcss-svg');
+const onError = require('../helpers/on-error');
 
 const styles = () => {
     const themePaths = global.gulppress.getThemePaths();
@@ -27,7 +28,7 @@ const styles = () => {
     return mergeStream(themePaths.map(themePath => {
         // Create stream
         let stream = src('./assets/src/sass/*.scss', {sourcemaps: true, cwd: themePath, base: ''})
-            .pipe(plumber());
+            .pipe(plumber({ errorHandler: onError('styles') }));
 
         // Allow filters to add to stream at the start
         stream = eventDispatcher.emitFilter(['task.styles.stream.post-src', 'stream.post-src'], stream, { streamName: 'styles' });

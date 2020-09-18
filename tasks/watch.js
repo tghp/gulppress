@@ -21,14 +21,18 @@ const watch = () => {
 
             b.on('update', () =>
                 browserifyHelper.gulpify(
-                    browserifyHelper.bundle(b),
+                    browserifyHelper.bundle(b, entryScript, themePath),
                     entryScript,
                     themePath
                 )
             );
 
             // Run an initial bundle so watchify can look for changes
-            browserifyHelper.gulpify(browserifyHelper.bundle(b), entryScript, themePath);
+            browserifyHelper.gulpify(
+                browserifyHelper.bundle(b, entryScript, themePath), 
+                entryScript, 
+                themePath
+            );
         });
     });
 
