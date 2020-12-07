@@ -5,7 +5,6 @@ const sass = require('gulp-dart-sass');
 const postcss  = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const postCssEase = require('postcss-easing-gradients');
-const postCssSvg = require('postcss-svg');
 const onError = require('../helpers/on-error');
 
 const styles = () => {
@@ -16,9 +15,6 @@ const styles = () => {
         'postcss.plugins',
         [
             postCssEase(),
-            postCssSvg(eventDispatcher.emitFilter('postcss-svg.options', {
-                grid: 'autoplace'
-            })),
             autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
                 grid: 'autoplace'
             }))
