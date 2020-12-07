@@ -14,7 +14,7 @@ const styles = () => {
     const plugins = eventDispatcher.emitFilter(
         'postcss.plugins',
         [
-            postCssEase(),
+            postCssEase(eventDispatcher.emitFilter('postcss-easing-gradients-options', {})),
             autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
                 grid: 'autoplace'
             }))
