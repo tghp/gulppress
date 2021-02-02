@@ -100,6 +100,21 @@ module.exports = class Gulppress {
     }
 
     /**
+     * Rename an existing task
+     * 
+     * @param oldTaskName 
+     * @param newTaskName 
+     */
+    renameTask (oldTaskName, newTaskName) {
+        if (!this.tasks[oldTaskName]) {
+            throw new Error(`Task ${oldTaskName} not found`);
+        }
+
+        this.tasks[newTaskName] = this.tasks[oldTaskName];
+        this.tasks[newTaskName].displayName = newTaskName;
+    }
+
+    /**
      * Set the task run when running gulp with no task specified
      *
      * @param task
