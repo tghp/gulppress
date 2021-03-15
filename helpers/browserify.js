@@ -2,6 +2,7 @@ const { dest } = require('gulp');
 const { basename } = require('path');
 const browserify = require('browserify');
 const babelify = require('babelify');
+const aliasify = require('aliasify');
 const uglifyify = require('uglifyify');
 const plumber = require('gulp-plumber');
 const source = require('vinyl-source-stream');
@@ -26,6 +27,9 @@ module.exports.instance = (entry, opts) => {
 };
 
 module.exports.bundle = (b, entryScript, themePath) => {
+    /**
+     * Babelify
+     */
     const dependenciesToTransform = global.gulppress.getEventDispatcher().emitFilter(
         'browserify.bundle.babelify-dependencies-to-transform', [
             '@tghp/groundwork.js'
@@ -47,6 +51,13 @@ module.exports.bundle = (b, entryScript, themePath) => {
 
     b.transform(babelify, balelifyOpts);
 
+    const aliasifyOpts = global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.aliasify-options', {
+        aliases: {},
+        verbose: false
+    });
+
+    b.transform(aliasify, aliasifyOpts);
+
     let parentPackage = parent(process.env.PWD);
 
     if (parentPackage) {
@@ -65,6 +76,11 @@ module.exports.bundle = (b, entryScript, themePath) => {
                     b.transform(tfilter(babelify, { filter: filename => {
                         return filename.indexOf(`node_modules/${dep}`) !== -1;
                     } }), balelifyOpts);
+
+                    aliasifyOpts.global = true;
+                    b.transform(tfilter(aliasify, { filter: filename => {
+                        return filename.indexOf(`node_modules/${dep}`) !== -1;
+                    } }), aliasifyOpts);
                 }
             });
 
@@ -73,6 +89,11 @@ module.exports.bundle = (b, entryScript, themePath) => {
                 b.transform(tfilter(babelify, { filter: filename => {
                     return filename.indexOf(transformPath) === 0;
                 } }), balelifyOpts);
+
+                aliasifyOpts.global = true;
+                b.transform(tfilter(aliasify, { filter: filename => {
+                    return filename.indexOf(transformPath) === 0;
+                } }), aliasifyOpts);
             });
         }
     }
