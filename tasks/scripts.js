@@ -11,13 +11,26 @@ const scripts = () => {
 
         if (scriptEntriesForThemePath.length) {
             scriptEntriesForThemePath.forEach(entryScript => {
+                const browserifyFilterData = {
+                    entryScript,
+                    themePath
+                };
+
+                const instance = global.gulppress.getEventDispatcher().emitFilter(
+                    'browserify.instance',
+                    browserifyHelper.instance(entryScript),
+                    browserifyFilterData
+                );
+
+                const bundle = global.gulppress.getEventDispatcher().emitFilter(
+                    'browserify.bundle',
+                    browserifyHelper.bundle(instance, entryScript, themePath),
+                    browserifyFilterData
+                );                
+
                 streams.push(
                     browserifyHelper.gulpify(
-                        browserifyHelper.bundle(
-                            browserifyHelper.instance(entryScript),
-                            entryScript,
-                            themePath
-                        ),
+                        bundle,
                         entryScript,
                         themePath
                     )

@@ -98,8 +98,18 @@ module.exports.bundle = (b, entryScript, themePath) => {
         }
     }
 
-    return bundle = b.transform(uglifyify, global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.uglifyify-options', { global: true }))
-        .bundle()
+    b.transform(uglifyify, global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.uglifyify-options', { global: true }));
+
+    const preBundleInstance = global.gulppress.getEventDispatcher().emitFilter(
+        'browserify.pre-bundle',
+        b,
+        {
+            entryScript,
+            themePath
+        }
+    );
+
+    return preBundleInstance.bundle()
         .on('error', onError('browserify') )
         .pipe(exorcist(`${themePath}/assets/dist/js/${basename(entryScript)}.map`));
 };
