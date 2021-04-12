@@ -1,6 +1,6 @@
 {
   "name": "@tghp/gulppress",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Shared gulpfile across TGHP WordPress projects",
   "main": "index.js",
   "repository": {
@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
-    "autoprefixer": "^10.2.4",
+    "autoprefixer": "^9.8.6",
     "babelify": "^10.0.0",
     "aliasify": "^2.1.0",
     "browserify": "^16.5.1",
