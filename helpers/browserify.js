@@ -49,14 +49,10 @@ module.exports.bundle = (b, entryScript, themePath) => {
         sourceMaps: false
     });
 
-    b.transform(babelify, balelifyOpts);
-
     const aliasifyOpts = global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.aliasify-options', {
         aliases: {},
         verbose: false
     });
-
-    b.transform(aliasify, aliasifyOpts);
 
     let parentPackage = parent(process.env.PWD);
 
@@ -97,6 +93,9 @@ module.exports.bundle = (b, entryScript, themePath) => {
             });
         }
     }
+
+    b.transform(babelify, balelifyOpts);
+    b.transform(aliasify, aliasifyOpts);
 
     b.transform(uglifyify, global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.uglifyify-options', { global: true }));
 
