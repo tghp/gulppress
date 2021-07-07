@@ -20,6 +20,15 @@ module.exports = class Gulppress {
     }
 
     /**
+     * Get the root path
+     *
+     * @return {*}
+     */
+    getRootPath () {
+      return this.rootPath;
+    }
+
+    /**
      * Glob theme paths in project
      *
      * @return {[]}
@@ -41,6 +50,17 @@ module.exports = class Gulppress {
      */
     getThemePaths () {
         return this.themePaths;
+    }
+
+    /**
+     * Add a theme path
+     * 
+     * @returns {*}
+     */
+    addThemePath (path) {
+      this.themePaths.push(path);
+
+      return this.themePaths;
     }
 
     /**
