@@ -1,7 +1,7 @@
 const glob = require('glob');
 const { basename, resolve } = require('path');
 const EventDispatcher = require('./event-dispatcher');
-
+const dotenv = require('dotenv');
 module.exports = class Gulppress {
 
     constructor(rootPath) {
@@ -10,6 +10,12 @@ module.exports = class Gulppress {
         }
 
         global.gulppress = this;
+
+        dotenv.config({ debug: rootPath });
+    
+        if (!process.env.WP_CONTENT_URL) {
+            throw 'WP_CONTENT_URL .env value missing, used for establishing URL';
+        }
 
         this.rootPath = rootPath;
         this.themePaths = this.loadThemePaths();
@@ -163,6 +169,15 @@ module.exports = class Gulppress {
         });
 
         return this;
+    }
+
+    /**
+     * Get the URL of the site
+     * 
+     * @return {*}
+     */
+    getProjectBaseUrl () {
+        return process.env.WP_CONTENT_URL.match(/^https?:\/\/[^/]*/)[0];
     }
 
 }
