@@ -32,7 +32,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "merge-stream": "^2.0.0",
     "parent-package-json": "^2.0.1",
-    "postcss": "^8.0.0",
+    "postcss": "^8.3.6",
     "postcss-easing-gradients": "^3.0.1",
     "sass": "^1.35.1",
     "tfilter": "^1.0.1",
