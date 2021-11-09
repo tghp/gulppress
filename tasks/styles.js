@@ -6,6 +6,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const postcss  = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const postCssEase = require('postcss-easing-gradients');
+const postCssDefaultPlugins = require('../helpers/postcss-default-plugins');
 const onError = require('../helpers/on-error');
 
 sass.compiler = require('sass');
@@ -15,14 +16,9 @@ const styles = () => {
     const eventDispatcher = global.gulppress.getEventDispatcher();
 
     const plugins = eventDispatcher.emitFilter(
-        'postcss.plugins',
-        [
-            postCssEase(eventDispatcher.emitFilter('postcss-easing-gradients-options', {})),
-            autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
-                grid: 'autoplace'
-            }))
-        ]
-    );
+      'postcss.plugins',
+      postCssDefaultPlugins()
+  );
 
     return mergeStream(themePaths.map(themePath => {
         // Create stream
