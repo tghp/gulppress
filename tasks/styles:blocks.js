@@ -25,7 +25,8 @@ const stylesBlocks = () => {
         let stream = src('./assets/src/sass/components/blocks/!(*_abstract*).scss', {sourcemaps:false, cwd: themePath, base: ''})
             .pipe(plumber({ errorHandler: onError('styles:blocks') }))
             .pipe(sourcemaps.init())
-            .pipe(rename(/^_/, 'block--'));
+            .pipe(rename(/^_/, 'block--'))
+            .pipe(replace(/@single-block-import/, '@import'));
 
         // Allow filters to add to stream at the start
         stream = eventDispatcher.emitFilter(['task.styles.stream.post-src', 'stream.post-src'], stream, { streamName: 'styles' });
