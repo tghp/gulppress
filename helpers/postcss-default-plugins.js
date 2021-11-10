@@ -7,7 +7,7 @@ module.exports = () => {
     return [
         postCssEase(eventDispatcher.emitFilter('postcss-easing-gradients-options', {})),
         autoprefixer(eventDispatcher.emitFilter('autoprefixer.options', {
-            grid: 'autoplace'
+            grid: 'no-autoplace'
         }))
     ];
 }
