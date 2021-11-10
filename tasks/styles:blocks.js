@@ -6,6 +6,7 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const postcss  = require('gulp-postcss');
 const rename = require('gulp-regex-rename');
+const replace = require('gulp-replace');
 const postCssDefaultPlugins = require('../helpers/postcss-default-plugins');
 const onError = require('../helpers/on-error');
 
