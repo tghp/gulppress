@@ -15,3 +15,20 @@ Gulppress will:
 ## Extending
 
 Provide a `gulppress.extend.js` script in the root of the project, and export a function. An instances of the `Gulppress` class is then available via `global.gulppress`.
+
+## Configuration
+
+Gulppress allows some global customisation for all instances, create a file in one of the following locations:
+
+* ~/.gulppressrc
+* ~/config/gulppress/config
+* /etc/gulppressrc
+* /etc/gulppress/config
+
+The file should be in JSON format. The following keys can then be used to configure:
+
+| Key | Value |
+|-----|-------|
+| notification | boolean. Default: true. Enable or disable notifications entirely. |
+| notificationSuccessSound | boolean or string. Default: false. Set to false to disable entirely. Set to a string to use that sound as a notifcation. Either a path to a wav or on mac, one of: Basso, Blow, Bottle, Frog, Funk, Glass, Hero, Morse, Ping, Pop, Purr, Sosumi, Submarine, Tink. |
+| notificationSuccessSound | boolean or string. Default: 'Ping'. Set to false to disable entirely. Set to a string to use that sound as a notifcation. Either a path to a wav or on mac, one of: Basso, Blow, Bottle, Frog, Funk, Glass, Hero, Morse, Ping, Pop, Purr, Sosumi, Submarine, Tink. |

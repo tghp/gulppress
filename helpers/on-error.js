@@ -1,17 +1,24 @@
 const notify = require('gulp-notify');
 const { resetNotifyType } = require('./notify-threshold');
+const conf = require('./config');
 
 module.exports = function (streamName) {
     return function (err) {
         resetNotifyType(streamName);
 
-        notify.onError({
+        if (conf.notification) {
+          const errorNotification = {
             title: 'Error',
             message: '<%= error.message %>',
-            sound: 'Beep',
             onLast: true
-        })(err);
-    
+          };
+
+          if (conf.notificationErrorSound) {
+            errorNotification.sound = conf.notificationErrorSound;
+          }
+
+          notify.onError(errorNotification)(err);
+        }
         this.emit('end');
     };
 }
