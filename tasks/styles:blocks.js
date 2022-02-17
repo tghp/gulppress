@@ -21,22 +21,28 @@ const stylesBlocks = () => {
         postCssDefaultPlugins()
     );
 
+    const blockPathPattern = eventDispatcher.emitFilter(
+        'task.styles:blocks.block-path-pattern',
+        './assets/src/sass/components/blocks/!(*_abstract*).scss'
+    );
+
     return mergeStream(themePaths.map(themePath => {
         // Create stream
-        let stream = src('./assets/src/sass/components/blocks/!(*_abstract*).scss', {sourcemaps:false, cwd: themePath, base: ''})
+        let stream = src(blockPathPattern, {sourcemaps:false, cwd: themePath, base: ''})
             .pipe(plumber({ errorHandler: onError('styles:blocks') }))
             .pipe(sourcemaps.init())
             .pipe(rename(/^_/, 'block--'))
-            .pipe(replace(/@single-block-import/, '@import'));
+            .pipe(replace(/@single-block-import/g, '@import'));
 
         // Allow filters to add to stream at the start
         stream = eventDispatcher.emitFilter(['task.styles.stream.post-src', 'stream.post-src'], stream, { streamName: 'styles' });
 
         // Add to stream for this task
-        stream = stream.pipe(sass({
-                includePaths: ['node_modules'],
-                outputStyle: 'compressed',
-            }));
+        stream = stream.pipe(sass(eventDispatcher.emitFilter('sass.options', {
+            includePaths: ['node_modules'],
+            outputStyle: 'compressed',
+        }, { eventName: 'styles:blocks' })));
+
 
         // Pipe through PostCSS
         stream = stream.pipe(postcss(plugins));
