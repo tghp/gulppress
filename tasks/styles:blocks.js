@@ -1,6 +1,7 @@
 const glob = require('glob');
 const { src, dest } = require('gulp');
 const plumber = require('gulp-plumber');
+const noop = require('gulp-noop');
 const mergeStream = require('merge-stream');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
@@ -12,7 +13,7 @@ const onError = require('../helpers/on-error');
 
 sass.compiler = require('sass');
 
-const stylesBlocks = () => {
+let stylesBlocks = () => {
     const themePaths = global.gulppress.getThemePaths();
     const eventDispatcher = global.gulppress.getEventDispatcher();
 
@@ -59,11 +60,12 @@ const stylesBlocks = () => {
         return eventDispatcher.emitFilter(['task.styles.stream.end', 'stream.end'], stream, { streamName: 'styles' });
     }));
 };
+
+if(!glob.sync('./src/themes/{*,*/*}/assets/src/sass/components/blocks/*').length) {
+    stylesBlocks = noop;
+}
+
 stylesBlocks.displayName = 'styles:blocks';
 stylesBlocks.description = 'Compile SCSS stylesheets for blocks';
 
-if(glob.sync('./src/themes/{*,*/*}/assets/src/sass/components/blocks/*').length) {
-  module.exports = stylesBlocks;
-} else {
-  module.exports = null;
-}
+module.exports = stylesBlocks;
