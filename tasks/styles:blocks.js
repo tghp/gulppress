@@ -61,10 +61,6 @@ let stylesBlocks = () => {
     }));
 };
 
-if(!glob.sync('./src/themes/{*,*/*}/assets/src/sass/components/blocks/*').length) {
-    stylesBlocks = noop;
-}
-
 stylesBlocks.displayName = 'styles:blocks';
 stylesBlocks.description = 'Compile SCSS stylesheets for blocks';
 
