@@ -1,6 +1,7 @@
 const { dest } = require('gulp');
 const { basename } = require('path');
 const browserify = require('browserify');
+const tsify = require('tsify');
 const babelify = require('babelify');
 const aliasify = require('aliasify');
 const uglifyify = require('uglifyify');
@@ -23,7 +24,10 @@ module.exports.instance = (entry, opts) => {
         })
     );
 
-    return browserify(browserifyOpts);
+    const instance = browserify(browserifyOpts);
+    instance.plugin(tsify);
+
+    return instance;
 };
 
 module.exports.bundle = (b, entryScript, themePath) => {
@@ -40,12 +44,19 @@ module.exports.bundle = (b, entryScript, themePath) => {
         'browserify.bundle.babelify-paths-to-transform', []
     );
 
-    const balelifyOpts = global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.babelify-options', {
-        "presets": ["@babel/preset-env"],
-        "plugins": [
-            ["@babel/plugin-transform-runtime"],
-            ["@babel/plugin-proposal-class-properties"]
+    const reactPreset = ['@babel/preset-react', {}];
+
+    if (global.gulppress.getOption('preact')) {
+        reactPreset[1].pragma = 'h';
+    }
+
+    const babelifyOpts = global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.babelify-options', {
+        'presets': [
+            ['@babel/preset-env'],
+            '@babel/preset-typescript',
+            reactPreset,
         ],
+        'extensions': ['.js', '.ts', '.tsx'],
         sourceMaps: false
     });
 
@@ -53,6 +64,11 @@ module.exports.bundle = (b, entryScript, themePath) => {
         aliases: {},
         verbose: false
     });
+
+    if (global.gulppress.getOption('preact')) {
+        aliasifyOpts.aliases['react'] = 'preact/compat';
+        aliasifyOpts.aliases['react-dom'] = 'preact/compat';
+    }
 
     let parentPackage = parent(process.env.PWD);
 
@@ -68,10 +84,10 @@ module.exports.bundle = (b, entryScript, themePath) => {
         if (parentDeps) {
             dependenciesToTransform.forEach(dep => {
                 if (Object.keys(parentDeps).indexOf(dep) !== -1) {
-                    balelifyOpts.global = true;
+                    babelifyOpts.global = true;
                     b.transform(tfilter(babelify, { filter: filename => {
                         return filename.indexOf(`node_modules/${dep}`) !== -1;
-                    } }), balelifyOpts);
+                    } }), babelifyOpts);
 
                     aliasifyOpts.global = true;
                     b.transform(tfilter(aliasify, { filter: filename => {
@@ -81,10 +97,10 @@ module.exports.bundle = (b, entryScript, themePath) => {
             });
 
             pathsToTransform.forEach(transformPath => {
-                balelifyOpts.global = true;
+                babelifyOpts.global = true;
                 b.transform(tfilter(babelify, { filter: filename => {
                     return filename.indexOf(transformPath) === 0;
-                } }), balelifyOpts);
+                } }), babelifyOpts);
 
                 aliasifyOpts.global = true;
                 b.transform(tfilter(aliasify, { filter: filename => {
@@ -94,7 +110,7 @@ module.exports.bundle = (b, entryScript, themePath) => {
         }
     }
 
-    b.transform(babelify, balelifyOpts);
+    b.transform(babelify, babelifyOpts);
     b.transform(aliasify, aliasifyOpts);
 
     b.transform(uglifyify, global.gulppress.getEventDispatcher().emitFilter('browserify.bundle.uglifyify-options', { global: true }));
@@ -108,16 +124,20 @@ module.exports.bundle = (b, entryScript, themePath) => {
         }
     );
 
+    const scriptBasename = basename(entryScript).replace(/\.ts$/, '.js');
+
     return preBundleInstance.bundle()
         .on('error', onError('browserify') )
-        .pipe(exorcist(`${themePath}/assets/dist/js/${basename(entryScript)}.map`));
+        .pipe(exorcist(`${themePath}/assets/dist/js/${scriptBasename}.map`));
 };
 
 module.exports.gulpify = (textStream, entryScript, themePath) => {
     const eventDispatcher = global.gulppress.getEventDispatcher();
 
+    const scriptBasename = basename(entryScript).replace(/\.ts$/, '.js');
+
     let stream = textStream
-        .pipe(source(basename(entryScript)))
+        .pipe(source(scriptBasename))
         .pipe(buffer())
         .pipe(plumber({ errorHandler: onError('browserify') }));
 

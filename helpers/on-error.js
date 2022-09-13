@@ -9,7 +9,7 @@ module.exports = function (streamName) {
         if (conf.notification) {
           const errorNotification = {
             title: 'Error',
-            message: '<%= error.message %>',
+            message: err.annotated ? '<%= error.annotated %>' : '<%= error.message %>',
             onLast: true
           };
 

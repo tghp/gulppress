@@ -21,6 +21,9 @@ module.exports = class Gulppress {
         this.themePaths = this.loadThemePaths();
         this.tasks = this.loadDefaultTasks();
         this.eventDispatcher = new EventDispatcher();
+        this.options = {
+            preact: false,
+        };
 
         this.runTaskFilters();
     }
@@ -178,6 +181,35 @@ module.exports = class Gulppress {
      */
     getProjectBaseUrl () {
         return process.env.WP_CONTENT_URL.match(/^https?:\/\/[^/]*/)[0];
+    }
+
+    /**
+     * Set an option
+     *
+     * @param option
+     * @param value
+     * @returns {*}
+     */
+    setOption (option, value) {
+        if (this.options[option] === undefined) {
+            throw new Error(`Option ${option} not found`);
+        }
+
+        return this.options[option] = value;
+    }
+
+    /**
+     * Get an option
+     *
+     * @param option
+     * @returns {*}
+     */
+    getOption (option) {
+        if (this.options[option] === undefined) {
+            throw new Error(`Option ${option} not found`);
+        }
+
+        return this.options[option];
     }
 
 }
