@@ -1,3 +1,6 @@
+# ⚠️ Archived Project
+This is a legacy project, now superseded by our equivalent tool that uses Vite instead: https://github.com/tghp/vitepress
+
 # gulppress
 
 An opioninated, pre-structured approach to build pipelines using gulp tasks for WordPress projects.
