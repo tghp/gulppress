@@ -1,6 +1,6 @@
 {
   "name": "@tghp/gulppress",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Shared gulpfile across TGHP WordPress projects",
   "main": "index.js",
   "repository": {

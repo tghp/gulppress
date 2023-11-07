@@ -8,7 +8,12 @@ const watch = () => {
 
     themePaths.forEach(themePath => {
         // Watch for sass changes
-        gulpWatch('assets/src/sass/{*,**/*}.scss', { cwd: themePath }, global.gulppress.getTask('styles'));
+        const stylesWatchArgs = global.gulppress.getEventDispatcher().emitFilter(
+          'task.watch.styles.options',
+          { cwd: themePath }
+        );
+
+        gulpWatch('assets/src/sass/{*,**/*}.scss', stylesWatchArgs, global.gulppress.getTask('styles'));
 
         // Watch for js changes
         scriptEntries(`${themePath}/assets/src/js`).forEach(entryScript => {
