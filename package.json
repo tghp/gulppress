@@ -22,7 +22,7 @@
     "browserify": "^16.5.1",
     "tsify": "^5.0.4",
     "dotenv": "^10.0.0",
-    "exorcist": "^1.0.1",
+    "exorcist": "^2.0.0",
     "glob": "^7.1.6",
     "gulp": "4.0.2",
     "gulp-if": "^3.0.0",
